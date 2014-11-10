@@ -1,0 +1,66 @@
+Dakusan License v2.0
+
+Regarding: Plex Playlist Importer v1.x
+http://www.castledragmire.com/Projects/Plex_Playlist_Importer
+
+------------------------------------------------------------------------------
+                                   Summary
+------------------------------------------------------------------------------
+The  below  license  gives  you  the  following rights: Use, redistribute, and
+modify  the  project  files freely as long as this license file is kept intact
+and included  with any of the  distributed project files or compilations, with
+changes from the original project appended in the addendum.
+
+Any information regarding contents of  this project that may not be covered by
+the below license are noted in the addendum.
+
+The below license uses the Original BSD License (4 Clause), slightly modified.
+
+Further/updated licensing/copyright information can be found at:
+  http://www.castledragmire.com/Copyright
+
+Jeffrey Riaboy (aka Dakusan)
+  http://www.castledragmire.com (Dakusan's Domain)
+
+------------------------------------------------------------------------------
+                                  Copyright
+------------------------------------------------------------------------------
+Copyright (c)2006-2014 Jeffrey Riaboy (aka Dakusan).    All  rights  reserved.
+
+------------------------------------------------------------------------------
+                                 The License
+------------------------------------------------------------------------------
+
+Redistribution   and   use  in  source  and  binary  forms,  with  or  without
+modification,  are permitted provided  that the  following conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this
+   list of  conditions, version information,  an updated list of changes,  and
+   the following disclaimer.
+2. Redistributions  in binary form  must reproduce the above copyright notice,
+   this list of conditions,  version information,  an updated list of changes,
+   and  the following disclaimer  in the documentation  and/or other materials
+   provided with the distribution.
+3. All  advertising materials mentioning features or use of this software must
+   display  the  following  acknowledgment:  This  product  includes  software
+   developed by Jeffrey Riaboy of Hyrulean Productions.
+4. Neither  the name of Hyrulean Productions nor the names of its contributors
+   may  be used  to endorse  or promote  products derived  from this  software
+   without specific prior written permission.
+
+THIS  SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
+AND  ANY EXPRESS  OR IMPLIED  WARRANTIES, INCLUDING,  BUT NOT  LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE
+FOR  ANY DIRECT,  INDIRECT, INCIDENTAL,  SPECIAL, EXEMPLARY,  OR CONSEQUENTIAL
+DAMAGES  (INCLUDING,  BUT NOT  LIMITED TO,  PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES;  LOSS OF  USE, DATA,  OR PROFITS;  OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED  AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF  THIS  SOFTWARE,  EVEN  IF  ADVISED  OF  THE  POSSIBILITY  OF  SUCH DAMAGE.
+
+------------------------------------------------------------------------------
+                                  Addendum
+------------------------------------------------------------------------------
+Dependencies:
+Python 3 (compiled against v3.4)
+The Plex database
