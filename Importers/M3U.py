@@ -1,5 +1,6 @@
 import Importers
 import os
+import re
 
 def _ImportMe(PlaylistPath):
     PlaylistFiles=[]
@@ -9,7 +10,8 @@ def _ImportMe(PlaylistPath):
             for LineStr in PlaylistFileHandle:
                 if(LineStr[0]=='#'): #Ignore comments/controls
                     continue
-                LookupPath=os.path.realpath(PlaylistDirPath+LineStr.rstrip('\n'))
+                IsAbsolutePath=(LineStr[0:2]=='\\\\' or re.match('[a-z]:\\\\', LineStr, flags=re.I)) #Check for absolute path syntax (smb or drive letter)
+                LookupPath=os.path.realpath(('' if IsAbsolutePath else PlaylistDirPath)+LineStr.rstrip('\n'))
                 if(not os.path.isfile(LookupPath)): #Confirm file exists
                     raise Exception('PlaylistFileNotFound', LineStr)
                 PlaylistFiles.append(LookupPath) #Add the relative path to the playlist file list
