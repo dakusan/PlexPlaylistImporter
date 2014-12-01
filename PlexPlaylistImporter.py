@@ -1,5 +1,5 @@
 #Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.
-#Plex Playlist Importer - v1.0.0.0 http://www.castledragmire.com/Projects/Plex_Playlist_Importer
+#Plex Playlist Importer - v1.0.0.3 http://www.castledragmire.com/Projects/Plex_Playlist_Importer
 
 import sys
 import os
@@ -106,7 +106,7 @@ try:
         if(Val is None):
             sys.exit("File not found in DB: "+FilePath)
         DBFileIDs.append(Val[0])
-        DBFileDurations.append(Val[1])
+        DBFileDurations.append(Val[1] if Val[1] is not None else 0)
 
     #Confirm/create the plex playlist
     Now=Cur.execute('SELECT DATETIME("NOW")').fetchone()[0]
