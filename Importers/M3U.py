@@ -6,7 +6,7 @@ def _ImportMe(PlaylistPath):
     PlaylistFiles=[]
     PlaylistDirPath=os.path.dirname(PlaylistPath)+os.sep
     try:
-        with open(PlaylistPath, 'r') as PlaylistFileHandle:
+        with open(PlaylistPath, 'r', encoding='utf-8') as PlaylistFileHandle: #Specify UTF-8 here to avoid Unicode errors
             for LineStr in PlaylistFileHandle:
                 if(LineStr[0]=='#'): #Ignore comments/controls
                     continue
