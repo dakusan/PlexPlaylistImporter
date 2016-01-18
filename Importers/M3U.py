@@ -9,6 +9,10 @@ def _ImportMe(PlaylistPath):
                 if(LineStr[0]=='#'): #Ignore comments/controls
                     continue
                 LookupPath = LineStr.strip()
+                if(not os.path.isabs(LookupPath)):
+                    # convert to absolute path
+                    PlaylistDir = os.path.dirname(PlaylistPath)
+                    LookupPath = os.path.abspath(os.path.join(PlaylistDir, LookupPath))
                 if(not os.path.isfile(LookupPath)): #Confirm file exists
                     raise Exception('PlaylistFileNotFound', LineStr)
                 PlaylistFiles.append(LookupPath) #Add the relative path to the playlist file list
