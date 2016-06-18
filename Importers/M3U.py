@@ -3,16 +3,14 @@ import os
 
 def _ImportMe(PlaylistPath):
     PlaylistFiles=[]
+    PlaylistDirPath=os.path.dirname(PlaylistPath)+os.sep
     try:
         with open(PlaylistPath, 'r', encoding='utf-8') as PlaylistFileHandle: #Specify UTF-8 here to avoid Unicode errors
             for LineStr in PlaylistFileHandle:
                 if(LineStr[0]=='#'): #Ignore comments/controls
                     continue
-                LookupPath = LineStr.strip()
-                if(not os.path.isabs(LookupPath)):
-                    # convert to absolute path
-                    PlaylistDir = os.path.dirname(PlaylistPath)
-                    LookupPath = os.path.abspath(os.path.join(PlaylistDir, LookupPath))
+                IsAbsolutePath=(os.path.isabs(LineStr) or LineStr[0:2]=='\\\\' or re.match('[a-z]:\\\\', LineStr, flags=re.I)) #Check for absolute path syntax (plus smb or drive letter)
+                LookupPath=os.path.realpath(('' if IsAbsolutePath else PlaylistDirPath)+LineStr.rstrip('\n'))
                 if(not os.path.isfile(LookupPath)): #Confirm file exists
                     raise Exception('PlaylistFileNotFound', LineStr)
                 PlaylistFiles.append(LookupPath) #Add the relative path to the playlist file list
