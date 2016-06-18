@@ -15,7 +15,7 @@ def _ImportMe(PlaylistPath):
             for LineStr in PlaylistFileHandle:
                 if(LineStr[0]=='#'): #Ignore comments/controls
                     continue
-                IsAbsolutePath=(LineStr[0:2]=='\\\\' or re.match('[a-z]:\\\\', LineStr, flags=re.I)) #Check for absolute path syntax (smb or drive letter)
+                IsAbsolutePath=(os.path.isabs(LineStr) or LineStr[0:2]=='\\\\' or re.match('[a-z]:\\\\', LineStr, flags=re.I)) #Check for absolute path syntax (plus smb or drive letter)
                 LookupPath=os.path.realpath(('' if IsAbsolutePath else PlaylistDirPath)+LineStr.rstrip('\n'))
                 if(not os.path.isfile(LookupPath)): #Confirm file exists
                     raise Exception('PlaylistFileNotFound', LineStr)
