@@ -10,18 +10,32 @@ def ConvertCygPath(Path):
 def _ImportMe(PlaylistPath):
     PlaylistFiles=[]
     PlaylistDirPath=os.path.dirname(PlaylistPath)+os.sep
+    IsFirstLine=True
     try:
         with open(PlaylistPath, 'r', encoding='utf-8') as PlaylistFileHandle: #Specify UTF-8 here to avoid Unicode errors
             for LineStr in PlaylistFileHandle:
-                if(LineStr[0]=='#'): #Ignore comments/controls
+                #Remove UTF8 BOM
+                if(IsFirstLine):
+                    IsFirstLine=False
+                    if(re.match('^\uFEFF', LineStr)):
+                        LineStr=LineStr[1:]
+
+                #Ignore comments/controls
+                if(LineStr[0]=='#'):
                     continue
+
+                #Confirm the file exists
                 IsAbsolutePath=(os.path.isabs(LineStr) or LineStr[0:2]=='\\\\' or re.match('[a-z]:\\\\', LineStr, flags=re.I)) #Check for absolute path syntax (plus smb or drive letter)
                 LookupPath=os.path.realpath(('' if IsAbsolutePath else PlaylistDirPath)+LineStr.rstrip('\n'))
                 if(not os.path.isfile(LookupPath)): #Confirm file exists
                     raise Exception('PlaylistFileNotFound', LineStr)
+
+                #Convert cygwin path
                 if(re.match(r'^/cygdrive/', LookupPath, re.I)!=None):
                     LookupPath=ConvertCygPath(LookupPath)
-                PlaylistFiles.append(LookupPath) #Add the relative path to the playlist file list
+
+                #Add the relative path to the playlist file list
+                PlaylistFiles.append(LookupPath)
     except IOError as E:
         raise Exception("Cannot open playlist file: "+str(E))
     except Exception as E:
