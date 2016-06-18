@@ -2,6 +2,11 @@ import Importers
 import os
 import re
 
+#Convert a cygwin path to a windows path
+def ConvertCygPath(Path):
+    import subprocess
+    return subprocess.check_output(['cygpath', '-w', Path]).decode('utf-8').strip('\n')
+
 def _ImportMe(PlaylistPath):
     PlaylistFiles=[]
     PlaylistDirPath=os.path.dirname(PlaylistPath)+os.sep
@@ -14,6 +19,8 @@ def _ImportMe(PlaylistPath):
                 LookupPath=os.path.realpath(('' if IsAbsolutePath else PlaylistDirPath)+LineStr.rstrip('\n'))
                 if(not os.path.isfile(LookupPath)): #Confirm file exists
                     raise Exception('PlaylistFileNotFound', LineStr)
+                if(re.match(r'^/cygdrive/', LookupPath, re.I)!=None):
+                    LookupPath=ConvertCygPath(LookupPath)
                 PlaylistFiles.append(LookupPath) #Add the relative path to the playlist file list
     except IOError as E:
         raise Exception("Cannot open playlist file: "+str(E))

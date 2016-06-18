@@ -5,4 +5,4 @@ if [[ `uname -s` == CYGWIN* ]] || [[ `uname -s` == MINGW* ]]; then
 fi
 
 #Call with extra variables
-/usr/bin/env PYTHONIOENCODING="utf-8" python "$DIR/PlexPlaylistImporter.py" "$@"
+/usr/bin/env PYTHONIOENCODING="utf-8" python3 "$DIR/PlexPlaylistImporter.py" "$@"
