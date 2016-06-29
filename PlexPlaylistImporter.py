@@ -30,11 +30,12 @@ Note: When passing a parameter string, environmental variables are not processed
 )
 parser.add_argument('-e', '--playlist_encoding', nargs=1, default=['utf-8'], metavar='Playlist_Encoding', dest='PlaylistEncoding', help='The encoding the playlist file is in. This is generally “utf-8”, but may also be “ISO-8859-1”. Default=utf-8')
 parser.add_argument('-t', '--override-type', nargs=1, metavar='File_Type_Override', dest='FileTypeOverride', help='The file type to encode as. If the file extension is not recognized, the file is parsed as a Winamp playlist (m3u). This allows overriding the determined file type. Default=NONE')
+parser.add_argument('-f', '--force-list', default=[False], action='store_true', dest='ForceListCreation', help='Do not prompt to create the playlist if it does not already exist.')
 parser.add_argument('PlaylistPath', nargs=1, metavar='Playlist_Path', help='The path of the playlist file')
-parser.add_argument('PlexPlaylistName', nargs=1, metavar='Plex_Playlist_Name', help='The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it.')
+parser.add_argument('PlexPlaylistName', nargs=1, metavar='Plex_Playlist_Name', help='The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it (unless -f is specified).')
 
 #Extract args into the global namespace, turning lists into their first value
-PlaylistPath=PlexPlaylistName=GivenDBPath=PlaylistEncoding=FileTypeOverride=None #Initiate the variables here so IDEs know they have been defined
+PlaylistPath=PlexPlaylistName=GivenDBPath=PlaylistEncoding=FileTypeOverride=ForceListCreation=None #Initiate the variables here so IDEs know they have been defined
 args=parser.parse_args()
 for name, val in vars(args).items():
     locals()[name]=(val[0] if isinstance(val, type([])) else val) #While settings vars via locals() is not guaranteed, it seems to work in this outer scope
@@ -136,6 +137,9 @@ try:
     else: #Name not found
         #Ask user if they want to create the plex playlist
         while(True):
+            if ForceListCreation:
+                break
+
             print("Plex playlist is not already created. Would you like to create it now (y/n)? ", end="")
             sys.stdout.flush()
             Answer=sys.stdin.readline()

@@ -14,12 +14,12 @@ For a Python for Windows install, the DLL location will most likely be located a
 
 ##Parameters:
 **usage**:<br>
-PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_Type_Override] Playlist_Path Plex_Playlist_Name
+PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_Type_Override] [-f] Playlist_Path Plex_Playlist_Name
 
 **positional arguments**:
 <table><tr><th>Arguments</th><th>Explanation</th></tr>
   <tr><td><b>Playlist_Path</b></td><td>The path of the playlist file</td></tr>
-  <tr><td><b>Plex_Playlist_Name</b></td><td>The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it.</td></tr>
+  <tr><td><b>Plex_Playlist_Name</b></td><td>The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it (unless -f is specified).</td></tr>
 </table>
 
 **optional arguments**:
@@ -54,6 +54,9 @@ PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_
 </tr><tr>
   <td><pre><b>-t</b> OR <b>--override-type</b></pre>File_Type_Override</td>
   <td>The file type to encode as. If the file extension is not recognized, the file is parsed as a Winamp playlist (m3u). This allows overriding the determined file type. Default=<b>NONE</b></td>
+</tr><tr>
+  <td><pre><b>-f</b> OR <b>--force-list</b></pre></td>
+  <td>Do not prompt to create the playlist if it does not already exist.</td>
 </tr></table>
 
 The only playlist type that is currently supported is Winamp playlists (.m3u).<br>

@@ -14,11 +14,11 @@ If running this mentions something about “no such module : FTS4”, you may ne
 For a Python for Windows install, the DLL location will most likely be located at C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python%PYTHON_VERSION%\DLLs .
 
 ---Parameters---
-usage: PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_Type_Override] Playlist_Path Plex_Playlist_Name
+usage: PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_Type_Override] [-f] Playlist_Path Plex_Playlist_Name
 
 positional arguments:
   Playlist_Path         The path of the playlist file
-  Plex_Playlist_Name    The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it.
+  Plex_Playlist_Name    The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it (unless -f is specified).
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -40,6 +40,7 @@ optional arguments:
                         The encoding the playlist file is in. This is generally “utf-8”, but may also be “ISO-8859-1”. Default=utf-8
   -t File_Type_Override, --override-type File_Type_Override
                         The file type to encode as. If the file extension is not recognized, the file is parsed as a Winamp playlist (m3u). This allows overriding the determined file type. Default=NONE
+  -f, --force-list      Do not prompt to create the playlist if it does not already exist.
 
 The only playlist type that is currently supported is Winamp playlists (.m3u).
 Playlist importers just collect the absolute files names, and others can easily be dropped into the “Importers” directory without any other code changes.
