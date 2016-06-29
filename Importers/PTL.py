@@ -1,7 +1,7 @@
 import Importers
-def _ImportMe(PlaylistPath):
+def _ImportMe(PlaylistPath, PlaylistEncoding):
     PlaylistFiles=[]
-    with open(PlaylistPath, 'r') as PlaylistFileHandle:
+    with open(PlaylistPath, 'r', encoding=PlaylistEncoding) as PlaylistFileHandle:
         for LineStr in PlaylistFileHandle:
             PlaylistFiles.append(LineStr.rstrip('\n'))
     return PlaylistFiles

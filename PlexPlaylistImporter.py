@@ -1,27 +1,43 @@
-#Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.
-#Plex Playlist Importer - v1.0.0.3 http://www.castledragmire.com/Projects/Plex_Playlist_Importer
+﻿#Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.
+#Plex Playlist Importer - v1.1.0.0 http://www.castledragmire.com/Projects/Plex_Playlist_Importer
 
 import sys
 import os
 import platform
 import sqlite3
 import uuid
+import argparse
 import Importers
+from BulletHelpFormatter import BulletHelpFormatter
 
 #Get and confirm the parameter variables
-VarList=['_', 'PlaylistPath', 'PlexPlaylistName', 'GivenDBPath']
-RequiredVars=3
-if(len(sys.argv)<RequiredVars):
-    sys.exit("\n"
-        "Parameters:\n"
-        "  1 (Required): The path of the playlist file. If the file extension is not recognized, the file is parsed as a Winamp playlist (.m3u)\n"
-        "  2 (Required): The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it\n"
-        "  3 (Optional): The path to the sqlite3 database file\n"
-        "    * The program tries to guess the path for the Plex data directory. If it cannot be found, this path needs to be passed explicitly\n"
-        "    * If the database is still not found from the given Plex path, the full path to the database is required\n"
-    )
-for Index, VarName in enumerate(VarList):
-    locals()[VarName]=(sys.argv[Index] if Index<len(sys.argv) else None)
+parser=argparse.ArgumentParser(description='Import playlists into plex', formatter_class=BulletHelpFormatter)
+parser.add_argument('-p', '--sqlitedb-path', nargs=1, metavar='Given_DB_Path', dest='GivenDBPath',
+    help=
+"""The path to the sqlite3 database file
+* The program tries to guess the path for the Plex data directory. If it cannot be found, this path needs to be passed explicitly
+  * The default paths are:
+    * Windows:
+      * %%LOCALAPPDATA%%/Plex Media Server/
+      * C:/Users/%%USER%%/AppData/Local/Plex Media Server/
+    * Linux:
+      * %%PLEX_HOME%%/Library/Application Support/Plex Media Server/
+* If the database is still not found from the given Plex path, the full path to the database is required
+  * Defaults: (%%PLEX_PATH%% is from the path found from above)
+    * %%PLEX_PATH%%/Plug-in Support/Databases/com.plexapp.plugins.library.db
+    * %%PLEX_PATH%%/Plug-Ins/Databases/com.plexapp.plugins.library.db
+Note: When passing a parameter string, environmental variables are not processed"""
+)
+parser.add_argument('-e', '--playlist_encoding', nargs=1, default=['utf-8'], metavar='Playlist_Encoding', dest='PlaylistEncoding', help='The encoding the playlist file is in. This is generally “utf-8”, but may also be “ISO-8859-1”. Default=utf-8')
+parser.add_argument('-t', '--override-type', nargs=1, metavar='File_Type_Override', dest='FileTypeOverride', help='The file type to encode as. If the file extension is not recognized, the file is parsed as a Winamp playlist (m3u). This allows overriding the determined file type. Default=NONE')
+parser.add_argument('PlaylistPath', nargs=1, metavar='Playlist_Path', help='The path of the playlist file')
+parser.add_argument('PlexPlaylistName', nargs=1, metavar='Plex_Playlist_Name', help='The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it.')
+
+#Extract args into the global namespace, turning lists into their first value
+PlaylistPath=PlexPlaylistName=GivenDBPath=PlaylistEncoding=FileTypeOverride=None #Initiate the variables here so IDEs know they have been defined
+args=parser.parse_args()
+for name, val in vars(args).items():
+    locals()[name]=(val[0] if isinstance(val, type([])) else val) #While settings vars via locals() is not guaranteed, it seems to work in this outer scope
 
 #Confirm the playlist path
 PlaylistPath=os.path.realpath(PlaylistPath)
@@ -76,7 +92,7 @@ if(PlexDBPath is None):
 
 #Open the playlist file and confirm/retrieve all paths
 try:
-    PlaylistFiles=Importers.DoImport(PlaylistPath)
+    PlaylistFiles=Importers.DoImport(PlaylistPath, FileTypeOverride, PlaylistEncoding)
 except Exception as E:
     sys.exit(E)
 
@@ -113,13 +129,10 @@ try:
     PLAYLIST_TYPE=15
     if(PlexPlaylistName==''):
         sys.exit("Playlist name cannot be blank")
-    Cur.execute('SELECT id, metadata_type FROM metadata_items WHERE title=?', (PlexPlaylistName,))
+    Cur.execute('SELECT id FROM metadata_items WHERE title=? AND metadata_type=?', (PlexPlaylistName, PLAYLIST_TYPE,))
     PlexPlaylistID=Cur.fetchone()
     if(PlexPlaylistID is not None): #Name found
-        if(PlexPlaylistID[1]!=PLAYLIST_TYPE): #Not a playlist
-            sys.exit("Playlist name has already been taken by a non-playlist")
-        else: #Is a playlist
-            PlexPlaylistID=PlexPlaylistID[0]
+        PlexPlaylistID=PlexPlaylistID[0]
     else: #Name not found
         #Ask user if they want to create the plex playlist
         while(True):

@@ -7,18 +7,20 @@ def ConvertCygPath(Path):
     import subprocess
     return subprocess.check_output(['cygpath', '-w', Path]).decode('utf-8').strip('\n')
 
-def _ImportMe(PlaylistPath):
+def _ImportMe(PlaylistPath, PlaylistEncoding):
     PlaylistFiles=[]
     PlaylistDirPath=os.path.dirname(PlaylistPath)+os.sep
     IsFirstLine=True
     try:
-        with open(PlaylistPath, 'r', encoding='utf-8') as PlaylistFileHandle: #Specify UTF-8 here to avoid Unicode errors
+        with open(PlaylistPath, 'r', encoding=PlaylistEncoding) as PlaylistFileHandle: #Specify UTF-8 here to avoid Unicode errors
             for LineStr in PlaylistFileHandle:
-                #Remove UTF8 BOM
+                #Handle first line of file
                 if(IsFirstLine):
                     IsFirstLine=False
-                    if(re.match('^\uFEFF', LineStr)):
-                        LineStr=LineStr[1:]
+                    #Remove UTF8 BOM
+                    if re.match(r'^utf.?8$', PlaylistEncoding):
+                        if re.match('^\uFEFF', LineStr):
+                            LineStr=LineStr[1:]
 
                 #Ignore comments/controls
                 if(LineStr[0]=='#'):
