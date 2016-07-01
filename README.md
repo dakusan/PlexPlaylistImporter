@@ -4,13 +4,17 @@ Plex Playlist Importer - v1.1.0.x http://www.castledragmire.com/Projects/Plex_Pl
 
 My music directories have been growing for over 2 decades in a folder based hierarchy, often using playlists for organization. Plex’s music organization is counterintuitive to this organizational structure, and Plex currently does not have an easy way to import external playlists. Hence this script was born :-)
 
-While this script requires Python 3 (compiled against v3.4), a stand-alone Windows binary version is also available on the URL at the top of this file.<br>
-If running through the Python source, The Python sqlite3 lib is required, but it should come with Python.
-
 This script is fully unicode compliant.
 
-If running this mentions something about “```no such module : FTS4```”, you may need to replace the sqlite3.dll or sqlite3.so for your Python, which can be found at https://www.sqlite.org/download.html .
-For a Python for Windows install, the DLL location will most likely be located at ```C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python%PYTHON_VERSION%\DLLs``` .
+##Running and Troubleshooting
+* While this script requires Python 3 (compiled against v3.4), a stand-alone Windows binary version is also available on the URL at the top of this file.<br>
+* While running the windows executable, if you get an error of “The program can't start because MSVCR100.dll is missing...”, download the “[Microsoft Visual C++ 2010 Redistributable Package (x86)](https://www.microsoft.com/en-us/download/details.aspx?id=5555)”.
+* If running through the Python source, The Python sqlite3 lib is required, but it should come with Python.
+  * If running this mentions something about “```no such module : FTS4```”, you may need to replace the sqlite3.dll or sqlite3.so for your Python, which can be found at https://www.sqlite.org/download.html .
+    * For a Python for Windows install, the DLL location will most likely be located at one of the following locations:
+      * ```C:\Python%PYTHON_VERSION%\DLLs```
+      * ```C:\Program Files (x86)\Python%PYTHON_VERSION%-32\DLLs```
+      * ```C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python%PYTHON_VERSION%\DLLs```
 
 ##Parameters:
 **usage**:<br>
@@ -68,6 +72,9 @@ PlexPlaylistImporter.sh is just included to force proper Unicode (utf-8) encodin
 ##How it works
 The songs you want to play have to already exist in the Plex database.<br>
 When you add a song to Plex (through Plex), it stores the song’s full file path in the Plex database. What this script does is derive all the full song paths in a playlist file that you give it, checks those paths against Plex’s database, and then adds the matches in the proper order into the Plex playlist you specified.<br>
-So for this reason, the script must be ran on the same computer running the Plex server so that it can match the paths (There are, of course, workarounds to this. However, I have found that the Plex server will need a restart if its library is updated from an external computer).
+So for this reason, the script must be ran on the same computer running the Plex server so that it can match the paths. (There are, of course, workarounds to this. **However, I highly recommend against it, as I have found that doing this may corrupt the Plex server database**).
+
+##Creating the executable
+```python setup.py py2exe```
 
 Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.

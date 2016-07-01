@@ -1,4 +1,4 @@
-﻿#Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.
+#Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.
 #Plex Playlist Importer - v1.1.0.0 http://www.castledragmire.com/Projects/Plex_Playlist_Importer
 
 import sys
@@ -28,7 +28,7 @@ parser.add_argument('-p', '--sqlitedb-path', nargs=1, metavar='Given_DB_Path', d
     * %%PLEX_PATH%%/Plug-Ins/Databases/com.plexapp.plugins.library.db
 Note: When passing a parameter string, environmental variables are not processed"""
 )
-parser.add_argument('-e', '--playlist_encoding', nargs=1, default=['utf-8'], metavar='Playlist_Encoding', dest='PlaylistEncoding', help='The encoding the playlist file is in. This is generally “utf-8”, but may also be “ISO-8859-1”. Default=utf-8')
+parser.add_argument('-e', '--playlist_encoding', nargs=1, default=['utf-8'], metavar='Playlist_Encoding', dest='PlaylistEncoding', help='The encoding the playlist file is in. This is generally "utf-8", but may also be "ISO-8859-1". Default=utf-8')
 parser.add_argument('-t', '--override-type', nargs=1, metavar='File_Type_Override', dest='FileTypeOverride', help='The file type to encode as. If the file extension is not recognized, the file is parsed as a Winamp playlist (m3u). This allows overriding the determined file type. Default=NONE')
 parser.add_argument('-f', '--force-list', default=[False], action='store_true', dest='ForceListCreation', help='Do not prompt to create the playlist if it does not already exist.')
 parser.add_argument('PlaylistPath', nargs=1, metavar='Playlist_Path', help='The path of the playlist file')
