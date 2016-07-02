@@ -4,6 +4,7 @@ Plex Playlist Importer - v1.1.0.x http://www.castledragmire.com/Projects/Plex_Pl
 
 My music directories have been growing for over 2 decades in a folder based hierarchy, often using playlists for organization. Plex’s music organization is counterintuitive to this organizational structure, and Plex currently does not have an easy way to import external playlists. Hence this script was born :-)
 
+You can run this by directly dragging playlists onto it.<br>
 This script is fully unicode compliant.
 
 ##Running and Troubleshooting
@@ -23,7 +24,12 @@ PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_
 **positional arguments**:
 <table><tr><th>Arguments</th><th>Explanation</th></tr>
   <tr><td><b>Playlist_Path</b></td><td>The path of the playlist file</td></tr>
-  <tr><td><b>Plex_Playlist_Name</b></td><td>The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it (unless -f is specified).</td></tr>
+  <tr><td><b>Plex_Playlist_Name</b></td><td>
+    The name of the playlist in Plex to import to.<ul>
+      <li>If not given, the program will prompt for it.</li>
+      <li>If the given playlist does not already exist, the program will prompt on whether to create it (unless -f is specified).</li>
+    </ul>
+  </td></tr>
 </table>
 
 **optional arguments**:

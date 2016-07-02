@@ -1,7 +1,8 @@
-#A HelpFormatter for argparse that takes raw input and wraps long lines to indent against the current line start.
-#When an indented/list line is encountered, which starts with spaces followed by a star "*", following indents will start 2 spaces after the star.
-#Lines attempt to split at words of 10 characters or less (.MinCharsInSplitWord).
-#If a line needs to split along a word longer than this, a hyphen is inserted at the end of the line.
+#A HelpFormatter for argparse which:
+#    Takes raw input and wraps long lines to indent against the current line start.
+#    When an indented/list line is encountered, which starts with spaces followed by a star "*", wrapped line’s indents will start 2 spaces after the star.
+#    Lines attempt to split at words of 10 characters or less (.MinCharsInSplitWord).
+#    If a line needs to split along a word longer than this, a hyphen is inserted at the end of the line.
 import argparse
 import re
 class BulletHelpFormatter(argparse.HelpFormatter):

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.
 #Plex Playlist Importer - v1.1.0.0 http://www.castledragmire.com/Projects/Plex_Playlist_Importer
 
@@ -32,7 +33,12 @@ parser.add_argument('-e', '--playlist_encoding', nargs=1, default=['utf-8'], met
 parser.add_argument('-t', '--override-type', nargs=1, metavar='File_Type_Override', dest='FileTypeOverride', help='The file type to encode as. If the file extension is not recognized, the file is parsed as a Winamp playlist (m3u). This allows overriding the determined file type. Default=NONE')
 parser.add_argument('-f', '--force-list', default=[False], action='store_true', dest='ForceListCreation', help='Do not prompt to create the playlist if it does not already exist.')
 parser.add_argument('PlaylistPath', nargs=1, metavar='Playlist_Path', help='The path of the playlist file')
-parser.add_argument('PlexPlaylistName', nargs=1, metavar='Plex_Playlist_Name', help='The name of the playlist in Plex to import to. If it does not exist, the program will prompt on whether to create it (unless -f is specified).')
+parser.add_argument('PlexPlaylistName', nargs='?', metavar='Plex_Playlist_Name',
+    help=
+"""The name of the playlist in Plex to import to.
+* If not given, the program will prompt for it.
+* If the given playlist does not already exist, the program will prompt on whether to create it (unless -f is specified)."""
+)
 
 #Extract args into the global namespace, turning lists into their first value
 PlaylistPath=PlexPlaylistName=GivenDBPath=PlaylistEncoding=FileTypeOverride=ForceListCreation=None #Initiate the variables here so IDEs know they have been defined
@@ -96,6 +102,13 @@ try:
     PlaylistFiles=Importers.DoImport(PlaylistPath, FileTypeOverride, PlaylistEncoding)
 except Exception as E:
     sys.exit(E)
+
+#Get the playlist name if not passed as a program argument
+while PlexPlaylistName is None or len(PlexPlaylistName.strip())==0:
+    print("Playlist name (Cannot be blank): ", end="")
+    sys.stdout.flush()
+    PlexPlaylistName=sys.stdin.readline()
+PlexPlaylistName=PlexPlaylistName.strip()
 
 #Insert into DB from a Dict
 def DBInsert(Cur, TableName, Values):
