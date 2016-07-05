@@ -22,8 +22,8 @@ def _ImportMe(PlaylistPath, PlaylistEncoding):
                         if re.match('^\uFEFF', LineStr):
                             LineStr=LineStr[1:]
 
-                #Ignore comments/controls
-                if(LineStr[0]=='#'):
+                #Ignore comments/controls and empty lines
+                if LineStr[0]=='#' or LineStr.strip()=='':
                     continue
 
                 #Confirm the file exists
