@@ -32,6 +32,8 @@ Note: When passing a parameter string, environmental variables are not processed
 parser.add_argument('-e', '--playlist_encoding', nargs=1, default=['utf-8'], metavar='Playlist_Encoding', dest='PlaylistEncoding', help='The encoding the playlist file is in. This is generally "utf-8", but may also be "ISO-8859-1". Default=utf-8')
 parser.add_argument('-t', '--override-type', nargs=1, metavar='File_Type_Override', dest='FileTypeOverride', help='The file type to encode as. If the file extension is not recognized, the file is parsed as a Winamp playlist (m3u). This allows overriding the determined file type. Default=NONE')
 parser.add_argument('-f', '--force-list', default=[False], action='store_true', dest='ForceListCreation', help='Do not prompt to create the playlist if it does not already exist.')
+parser.add_argument('-i', '--account-id', nargs=1, default=['1'], metavar='Account_ID', dest='AccountID', help='The id of plex account to add playlist to if not master.')
+parser.add_argument('-n', '--account-name', nargs=1, default=[''], metavar='Account_Name', dest='AccountName', help='The name of plex account to add playlist to if not master.')
 parser.add_argument('PlaylistPath', nargs=1, metavar='Playlist_Path', help='The path of the playlist file')
 parser.add_argument('PlexPlaylistName', nargs='?', metavar='Plex_Playlist_Name',
     help=
@@ -41,7 +43,7 @@ parser.add_argument('PlexPlaylistName', nargs='?', metavar='Plex_Playlist_Name',
 )
 
 #Extract args into the global namespace, turning lists into their first value
-PlaylistPath=PlexPlaylistName=GivenDBPath=PlaylistEncoding=FileTypeOverride=ForceListCreation=None #Initiate the variables here so IDEs know they have been defined
+PlaylistPath=PlexPlaylistName=GivenDBPath=PlaylistEncoding=FileTypeOverride=ForceListCreation=AccountID=AccountName=None #Initiate the variables here so IDEs know they have been defined
 args=parser.parse_args()
 for name, val in vars(args).items():
     locals()[name]=(val[0] if isinstance(val, type([])) else val) #While settings vars via locals() is not guaranteed, it seems to work in this outer scope
@@ -169,8 +171,18 @@ try:
             'absolute_index':10 #TODO: Where does this come from?
         })
         PlexPlaylistID=Cur.lastrowid
+        
+        #BK: Convert AccountName to AccountID
+        if(AccountName is not None):
+            Cur.execute('SELECT id FROM accounts WHERE name=?', (AccountName,))
+            AccountID=Cur.fetchone()
+            if(AccountID is not None): #Name found
+                AccountID=AccountID[0]
+            else: #Name not found
+                AccountID='1'
+        
         DBInsert(Cur, 'metadata_item_accounts', {
-            'account_id':1, 'metadata_item_id':PlexPlaylistID #TODO: Does AccountID need to be dynamic?
+            'account_id':AccountID, 'metadata_item_id':PlexPlaylistID #BK: Made AccountID dynamic
         })
         DB.commit()
 
