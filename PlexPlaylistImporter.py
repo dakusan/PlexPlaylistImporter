@@ -132,6 +132,8 @@ try:
     #Get the list of IDs for the playlist's files in the DB
     DBFileIDs=[]
     DBFileDurations=[] #Parallel to DBFileIDs
+    number_imported=0
+    number_already_in_plex=0
     for FilePath in PlaylistFiles:
         Cur.execute('SELECT MI.metadata_item_id, MP.duration FROM media_parts AS MP INNER JOIN media_items AS MI ON MI.id=MP.media_item_id WHERE MP.file=? COLLATE NOCASE', (FilePath,)) #TODO: Should only have COLLATE NOCASE on case insensitive file systems
         Val=Cur.fetchone()
@@ -192,16 +194,23 @@ try:
     CurOrder=Cur.execute('SELECT MAX(`order`) FROM play_queue_generators WHERE playlist_id=?', (PlexPlaylistID,)).fetchone()[0]
     Vars={'playlist_id':PlexPlaylistID, 'metadata_item_id':0, 'order':(0 if CurOrder is None else CurOrder)+OrderInc, 'created_at':Now, 'updated_at':Now, 'uri':''}
     for Index, DBItemID in enumerate(DBFileIDs):
-        Vars['metadata_item_id']=DBItemID
-        DBInsert(Cur, 'play_queue_generators', Vars)
-        Vars['order']+=OrderInc
-        AddDuration+=(int)(DBFileDurations[Index]/1000)
+        current_row = Cur.execute("select * from play_queue_generators where playlist_id = ? and metadata_item_id = ?",(PlexPlaylistID, DBItemID)).fetchone()
+        if current_row is None :
+            Vars['metadata_item_id']=DBItemID
+            DBInsert(Cur, 'play_queue_generators', Vars)
+            Vars['order']+=OrderInc
+            AddDuration+=(int)(DBFileDurations[Index]/1000)
+            number_imported = number_imported + 1
+        else :
+            number_already_in_plex = number_already_in_plex + 1
 
     #Update the playlists info
     Cur.execute('UPDATE metadata_items SET duration=duration+?, media_item_count=media_item_count+? WHERE id=?', (AddDuration, len(DBFileIDs), PlexPlaylistID))
 
     #Commit and return success
     DB.commit()
-    print("%i items imported" % len(DBFileIDs))
+    print("%i items imported" % number_imported)
+    print("%i items not imported as already on the playlist" % number_already_in_plex)
+    
 except Exception as E:
     sys.exit("DB Error: "+str(E))
