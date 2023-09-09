@@ -1,4 +1,8 @@
-Plex Playlist Importer - v1.1.0.x http://www.castledragmire.com/Projects/Plex_Playlist_Importer
+# Plex Playlist Importer
+
+v1.1.0.x 
+
+http://www.castledragmire.com/Projects/Plex_Playlist_Importer
 
 # Import playlists into Plex
 
@@ -7,17 +11,24 @@ My music directories have been growing for over 2 decades in a folder based hier
 You can run this by directly dragging playlists onto it.<br>
 This script is fully unicode compliant.
 
-##Running and Troubleshooting
-* While this script requires Python 3 (compiled against v3.4), a stand-alone Windows binary version is also available on the URL at the top of this file.<br>
-* While running the windows executable, if you get an error of “The program can't start because MSVCR100.dll is missing...”, download the “[Microsoft Visual C++ 2010 Redistributable Package (x86)](https://www.microsoft.com/en-us/download/details.aspx?id=5555)”.
-* If running through the Python source, The Python sqlite3 lib is required, but it should come with Python.
-  * If running this mentions something about “```no such module : FTS4```”, you may need to replace the sqlite3.dll or sqlite3.so for your Python, which can be found at https://www.sqlite.org/download.html .
-    * For a Python for Windows install, the DLL location will most likely be located at one of the following locations:
-      * ```C:\Python%PYTHON_VERSION%\DLLs```
-      * ```C:\Program Files (x86)\Python%PYTHON_VERSION%-32\DLLs```
-      * ```C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python%PYTHON_VERSION%\DLLs```
+## Running and Troubleshooting
 
-##Parameters:
+- While this script requires Python 3 (compiled against v3.4), a stand-alone Windows binary version is also available on the URL at the top of this file.
+- While running the windows executable, if you get an error of “The program can't start because MSVCR100.dll is missing...”, download the “[Microsoft Visual C++ 2010 Redistributable Package (x86)](https://www.microsoft.com/en-us/download/details.aspx?id=5555)”.
+- If running through the Python source, The Python sqlite3 lib is required, but it should come with Python.
+   - If running this mentions something about “```no such module : FTS4```”, you may need to replace the sqlite3.dll or sqlite3.so for your Python, which can be found at https://www.sqlite.org/download.html .
+    - For a Python for Windows install, the DLL location will most likely be located at one of the following locations:
+
+```
+      C:\Python%PYTHON_VERSION%\DLLs```
+C:\Program Files (x86)\Python%PYTHON_VERSION%-32\DLLs```
+
+```
+C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python%PYTHON_VERSION%\DLLs
+```
+
+## Parameters
+
 **usage**:<br>
 PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_Type_Override] [-f] Playlist_Path Plex_Playlist_Name
 
