@@ -7,7 +7,7 @@ My music directories have been growing for over 2 decades in a folder based hier
 You can run this by directly dragging playlists onto it.<br>
 This script is fully unicode compliant.
 
-##Running and Troubleshooting
+## Running and Troubleshooting
 * While this script requires Python 3 (compiled against v3.4), a stand-alone Windows binary version is also available on the URL at the top of this file.<br>
 * While running the windows executable, if you get an error of “The program can't start because MSVCR100.dll is missing...”, download the “[Microsoft Visual C++ 2010 Redistributable Package (x86)](https://www.microsoft.com/en-us/download/details.aspx?id=5555)”.
 * If running through the Python source, The Python sqlite3 lib is required, but it should come with Python.
@@ -17,7 +17,7 @@ This script is fully unicode compliant.
       * ```C:\Program Files (x86)\Python%PYTHON_VERSION%-32\DLLs```
       * ```C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python%PYTHON_VERSION%\DLLs```
 
-##Parameters:
+## Parameters:
 **usage**:<br>
 PlexPlaylistImporter.py [-h] [-p Given_DB_Path] [-e Playlist_Encoding] [-t File_Type_Override] [-f] Playlist_Path Plex_Playlist_Name
 
@@ -75,12 +75,12 @@ While the M3U importer (Importers/M3U.py) is the most appropriate to use as a te
 
 PlexPlaylistImporter.sh is just included to force proper Unicode (utf-8) encoding and column widths on the console.
 
-##How it works
+## How it works
 The songs you want to play have to already exist in the Plex database.<br>
 When you add a song to Plex (through Plex), it stores the song’s full file path in the Plex database. What this script does is derive all the full song paths in a playlist file that you give it, checks those paths against Plex’s database, and then adds the matches in the proper order into the Plex playlist you specified.<br>
 So for this reason, the script must be ran on the same computer running the Plex server so that it can match the paths. (There are, of course, workarounds to this. **However, I highly recommend against it, as I have found that doing this may corrupt the Plex server database**).
 
-##Creating the executable
+## Creating the executable
 ```python setup.py py2exe```
 
 Copyright and coded by Dakusan - See http://www.castledragmire.com/Copyright for more information.
